@@ -1,12 +1,12 @@
 package com.usc.ranshop.service.impl;
 
-import com.usc.ranshop.entity.Cart;
-import com.usc.ranshop.entity.ProductInOrder;
-import com.usc.ranshop.entity.User;
+import com.usc.ranshop.beans.Cart;
+import com.usc.ranshop.beans.ProductInOrder;
+import com.usc.ranshop.beans.User;
 import com.usc.ranshop.exception.MyException;
-import com.usc.ranshop.repository.CartRepository;
-import com.usc.ranshop.repository.OrderRepository;
-import com.usc.ranshop.repository.ProductInOrderRepository;
+import com.usc.ranshop.dao.CartDao;
+import com.usc.ranshop.dao.OrderDao;
+import com.usc.ranshop.dao.ProductInOrderDao;
 import com.usc.ranshop.service.ProductService;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,13 +30,13 @@ public class CartServiceImplTest {
     private ProductService productService;
 
     @Mock
-    private ProductInOrderRepository productInOrderRepository;
+    private ProductInOrderDao productInOrderDao;
 
     @Mock
-    private CartRepository cartRepository;
+    private CartDao cartDAO;
 
     @Mock
-    private OrderRepository orderRepository;
+    private OrderDao orderDao;
 
     private User user;
 
@@ -73,8 +73,8 @@ public class CartServiceImplTest {
     public void mergeLocalCartTest() {
         cartService.mergeLocalCart(set, user);
 
-        Mockito.verify(cartRepository, Mockito.times(1)).save(cart);
-        Mockito.verify(productInOrderRepository, Mockito.times(1)).save(productInOrder);
+        Mockito.verify(cartDAO, Mockito.times(1)).save(cart);
+        Mockito.verify(productInOrderDao, Mockito.times(1)).save(productInOrder);
     }
 
     @Test
@@ -87,9 +87,9 @@ public class CartServiceImplTest {
 
         cartService.mergeLocalCart(set, user);
 
-        Mockito.verify(cartRepository, Mockito.times(1)).save(cart);
-        Mockito.verify(productInOrderRepository, Mockito.times(1)).save(productInOrder);
-        Mockito.verify(productInOrderRepository, Mockito.times(1)).save(productInOrder2);
+        Mockito.verify(cartDAO, Mockito.times(1)).save(cart);
+        Mockito.verify(productInOrderDao, Mockito.times(1)).save(productInOrder);
+        Mockito.verify(productInOrderDao, Mockito.times(1)).save(productInOrder2);
     }
 
     @Test
@@ -98,15 +98,15 @@ public class CartServiceImplTest {
 
         cartService.mergeLocalCart(set, user);
 
-        Mockito.verify(cartRepository, Mockito.times(1)).save(cart);
-        Mockito.verify(productInOrderRepository, Mockito.times(1)).save(productInOrder);
+        Mockito.verify(cartDAO, Mockito.times(1)).save(cart);
+        Mockito.verify(productInOrderDao, Mockito.times(1)).save(productInOrder);
     }
 
     @Test
     public void deleteTest() {
         cartService.delete("1", user);
 
-        Mockito.verify(productInOrderRepository, Mockito.times(1)).deleteById(productInOrder.getId());
+        Mockito.verify(productInOrderDao, Mockito.times(1)).deleteById(productInOrder.getId());
     }
 
     @Test(expected = MyException.class)
@@ -123,6 +123,6 @@ public class CartServiceImplTest {
     public void checkoutTest() {
         cartService.checkout(user);
 
-        Mockito.verify(productInOrderRepository, Mockito.times(1)).save(productInOrder);
+        Mockito.verify(productInOrderDao, Mockito.times(1)).save(productInOrder);
     }
 }

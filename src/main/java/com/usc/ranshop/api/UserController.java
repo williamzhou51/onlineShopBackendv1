@@ -1,6 +1,6 @@
 package com.usc.ranshop.api;
 
-import com.usc.ranshop.entity.User;
+import com.usc.ranshop.beans.User;
 import com.usc.ranshop.security.JWT.JwtProvider;
 import com.usc.ranshop.service.UserService;
 import com.usc.ranshop.vo.request.LoginForm;

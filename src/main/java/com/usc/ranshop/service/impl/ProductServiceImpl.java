@@ -2,8 +2,8 @@ package com.usc.ranshop.service.impl;
 
 
 import com.usc.ranshop.exception.MyException;
-import com.usc.ranshop.repository.ProductInfoRepository;
-import com.usc.ranshop.entity.ProductInfo;
+import com.usc.ranshop.dao.ProductInfoDao;
+import com.usc.ranshop.beans.ProductInfo;
 import com.usc.ranshop.enums.ProductStatusEnum;
 import com.usc.ranshop.enums.ResultEnum;
 import com.usc.ranshop.service.CategoryService;
@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
-    ProductInfoRepository productInfoRepository;
+    ProductInfoDao productInfoDao;
 
     @Autowired
     CategoryService categoryService;
@@ -29,23 +29,23 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductInfo findOne(String productId) {
 
-        ProductInfo productInfo = productInfoRepository.findByProductId(productId);
+        ProductInfo productInfo = productInfoDao.findByProductId(productId);
         return productInfo;
     }
 
     @Override
     public Page<ProductInfo> findUpAll(Pageable pageable) {
-        return productInfoRepository.findAllByProductStatusOrderByProductIdAsc(ProductStatusEnum.UP.getCode(),pageable);
+        return productInfoDao.findAllByProductStatusOrderByProductIdAsc(ProductStatusEnum.UP.getCode(),pageable);
     }
 
     @Override
     public Page<ProductInfo> findAll(Pageable pageable) {
-        return productInfoRepository.findAllByOrderByProductId(pageable);
+        return productInfoDao.findAllByOrderByProductId(pageable);
     }
 
     @Override
     public Page<ProductInfo> findAllInCategory(Integer categoryType, Pageable pageable) {
-        return productInfoRepository.findAllByCategoryTypeOrderByProductIdAsc(categoryType, pageable);
+        return productInfoDao.findAllByCategoryTypeOrderByProductIdAsc(categoryType, pageable);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class ProductServiceImpl implements ProductService {
 
         int update = productInfo.getProductStock() + amount;
         productInfo.setProductStock(update);
-        productInfoRepository.save(productInfo);
+        productInfoDao.save(productInfo);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class ProductServiceImpl implements ProductService {
         if(update <= 0) throw new MyException(ResultEnum.PRODUCT_NOT_ENOUGH );
 
         productInfo.setProductStock(update);
-        productInfoRepository.save(productInfo);
+        productInfoDao.save(productInfo);
     }
 
     @Override
@@ -84,7 +84,7 @@ public class ProductServiceImpl implements ProductService {
 
         //更新
         productInfo.setProductStatus(ProductStatusEnum.DOWN.getCode());
-        return productInfoRepository.save(productInfo);
+        return productInfoDao.save(productInfo);
     }
 
     @Override
@@ -99,7 +99,7 @@ public class ProductServiceImpl implements ProductService {
 
         //更新
         productInfo.setProductStatus(ProductStatusEnum.UP.getCode());
-        return productInfoRepository.save(productInfo);
+        return productInfoDao.save(productInfo);
     }
 
     @Override
@@ -112,7 +112,7 @@ public class ProductServiceImpl implements ProductService {
         }
 
 
-        return productInfoRepository.save(productInfo);
+        return productInfoDao.save(productInfo);
     }
 
     @Override
@@ -124,7 +124,7 @@ public class ProductServiceImpl implements ProductService {
     public void delete(String productId) {
         ProductInfo productInfo = findOne(productId);
         if (productInfo == null) throw new MyException(ResultEnum.PRODUCT_NOT_EXIST);
-        productInfoRepository.delete(productInfo);
+        productInfoDao.delete(productInfo);
 
     }
 

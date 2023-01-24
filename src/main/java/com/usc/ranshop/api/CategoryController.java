@@ -1,8 +1,8 @@
 package com.usc.ranshop.api;
 
 
-import com.usc.ranshop.entity.ProductCategory;
-import com.usc.ranshop.entity.ProductInfo;
+import com.usc.ranshop.beans.ProductCategory;
+import com.usc.ranshop.beans.ProductInfo;
 import com.usc.ranshop.service.CategoryService;
 import com.usc.ranshop.service.ProductService;
 import com.usc.ranshop.vo.response.CategoryPage;

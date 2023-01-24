@@ -1,8 +1,8 @@
 package com.usc.ranshop.service;
 
-import com.usc.ranshop.entity.ProductInOrder;
-import com.usc.ranshop.entity.Cart;
-import com.usc.ranshop.entity.User;
+import com.usc.ranshop.beans.ProductInOrder;
+import com.usc.ranshop.beans.Cart;
+import com.usc.ranshop.beans.User;
 
 import java.util.Collection;
 

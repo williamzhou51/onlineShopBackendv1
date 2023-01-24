@@ -1,4 +1,4 @@
-package com.usc.ranshop.entity;
+package com.usc.ranshop.beans;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;

@@ -1,6 +1,6 @@
-package com.usc.ranshop.repository;
+package com.usc.ranshop.dao;
 
-import com.usc.ranshop.entity.ProductCategory;
+import com.usc.ranshop.beans.ProductCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created By Zhu Lin on 3/9/2018.
  */
-public interface ProductCategoryRepository extends JpaRepository<ProductCategory, Integer> {
+public interface ProductCategoryDao extends JpaRepository<ProductCategory, Integer> {
     // Some category
     List<ProductCategory> findByCategoryTypeInOrderByCategoryTypeAsc(List<Integer> categoryTypes);
     // All category

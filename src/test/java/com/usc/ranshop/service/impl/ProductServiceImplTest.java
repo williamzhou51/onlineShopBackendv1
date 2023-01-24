@@ -1,9 +1,9 @@
 package com.usc.ranshop.service.impl;
 
-import com.usc.ranshop.entity.ProductInfo;
+import com.usc.ranshop.beans.ProductInfo;
 import com.usc.ranshop.enums.ProductStatusEnum;
 import com.usc.ranshop.exception.MyException;
-import com.usc.ranshop.repository.ProductInfoRepository;
+import com.usc.ranshop.dao.ProductInfoDao;
 import com.usc.ranshop.service.CategoryService;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +22,7 @@ public class ProductServiceImplTest {
     private ProductServiceImpl productService;
 
     @Mock
-    private ProductInfoRepository productInfoRepository;
+    private ProductInfoDao productInfoDao;
 
     @Mock
     private CategoryService categoryService;
@@ -39,11 +39,11 @@ public class ProductServiceImplTest {
 
     @Test
     public void increaseStockTest() {
-        when(productInfoRepository.findByProductId(productInfo.getProductId())).thenReturn(productInfo);
+        when(productInfoDao.findByProductId(productInfo.getProductId())).thenReturn(productInfo);
 
         productService.increaseStock("1", 10);
 
-        Mockito.verify(productInfoRepository, Mockito.times(1)).save(productInfo);
+        Mockito.verify(productInfoDao, Mockito.times(1)).save(productInfo);
     }
 
     @Test(expected = MyException.class)
@@ -53,16 +53,16 @@ public class ProductServiceImplTest {
 
     @Test
     public void decreaseStockTest() {
-        when(productInfoRepository.findByProductId(productInfo.getProductId())).thenReturn(productInfo);
+        when(productInfoDao.findByProductId(productInfo.getProductId())).thenReturn(productInfo);
 
         productService.decreaseStock("1", 9);
 
-        Mockito.verify(productInfoRepository, Mockito.times(1)).save(productInfo);
+        Mockito.verify(productInfoDao, Mockito.times(1)).save(productInfo);
     }
 
     @Test(expected = MyException.class)
     public void decreaseStockValueLesserEqualTest() {
-        when(productInfoRepository.findByProductId(productInfo.getProductId())).thenReturn(productInfo);
+        when(productInfoDao.findByProductId(productInfo.getProductId())).thenReturn(productInfo);
 
         productService.decreaseStock("1", 10);
     }
@@ -76,25 +76,25 @@ public class ProductServiceImplTest {
     public void offSaleTest() {
         productInfo.setProductStatus(ProductStatusEnum.UP.getCode());
 
-        when(productInfoRepository.findByProductId(productInfo.getProductId())).thenReturn(productInfo);
+        when(productInfoDao.findByProductId(productInfo.getProductId())).thenReturn(productInfo);
 
         productService.offSale("1");
 
-        Mockito.verify(productInfoRepository, Mockito.times(1)).save(productInfo);
+        Mockito.verify(productInfoDao, Mockito.times(1)).save(productInfo);
     }
 
     @Test(expected = MyException.class)
     public void offSaleStatusDownTest() {
         productInfo.setProductStatus(ProductStatusEnum.DOWN.getCode());
 
-        when(productInfoRepository.findByProductId(productInfo.getProductId())).thenReturn(productInfo);
+        when(productInfoDao.findByProductId(productInfo.getProductId())).thenReturn(productInfo);
 
         productService.offSale("1");
     }
 
     @Test(expected = MyException.class)
     public void offSaleProductNullTest() {
-        when(productInfoRepository.findByProductId(productInfo.getProductId())).thenReturn(null);
+        when(productInfoDao.findByProductId(productInfo.getProductId())).thenReturn(null);
 
         productService.offSale("1");
     }
@@ -103,25 +103,25 @@ public class ProductServiceImplTest {
     public void onSaleTest() {
         productInfo.setProductStatus(ProductStatusEnum.DOWN.getCode());
 
-        when(productInfoRepository.findByProductId(productInfo.getProductId())).thenReturn(productInfo);
+        when(productInfoDao.findByProductId(productInfo.getProductId())).thenReturn(productInfo);
 
         productService.onSale("1");
 
-        Mockito.verify(productInfoRepository, Mockito.times(1)).save(productInfo);
+        Mockito.verify(productInfoDao, Mockito.times(1)).save(productInfo);
     }
 
     @Test(expected = MyException.class)
     public void onSaleStatusUpTest() {
         productInfo.setProductStatus(ProductStatusEnum.UP.getCode());
 
-        when(productInfoRepository.findByProductId(productInfo.getProductId())).thenReturn(productInfo);
+        when(productInfoDao.findByProductId(productInfo.getProductId())).thenReturn(productInfo);
 
         productService.onSale("1");
     }
 
     @Test(expected = MyException.class)
     public void onSaleProductNullTest() {
-        when(productInfoRepository.findByProductId(productInfo.getProductId())).thenReturn(null);
+        when(productInfoDao.findByProductId(productInfo.getProductId())).thenReturn(null);
 
         productService.offSale("1");
     }
@@ -130,7 +130,7 @@ public class ProductServiceImplTest {
     public void updateTest() {
         productService.update(productInfo);
 
-        Mockito.verify(productInfoRepository, Mockito.times(1)).save(productInfo);
+        Mockito.verify(productInfoDao, Mockito.times(1)).save(productInfo);
     }
 
     @Test(expected = MyException.class)
@@ -142,11 +142,11 @@ public class ProductServiceImplTest {
 
     @Test
     public void deleteTest() {
-        when(productInfoRepository.findByProductId(productInfo.getProductId())).thenReturn(productInfo);
+        when(productInfoDao.findByProductId(productInfo.getProductId())).thenReturn(productInfo);
 
         productService.delete("1");
 
-        Mockito.verify(productInfoRepository, Mockito.times(1)).delete(productInfo);
+        Mockito.verify(productInfoDao, Mockito.times(1)).delete(productInfo);
     }
 
     @Test(expected = MyException.class)

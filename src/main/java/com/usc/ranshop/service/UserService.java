@@ -1,7 +1,7 @@
 package com.usc.ranshop.service;
 
 
-import com.usc.ranshop.entity.User;
+import com.usc.ranshop.beans.User;
 
 import java.util.Collection;
 

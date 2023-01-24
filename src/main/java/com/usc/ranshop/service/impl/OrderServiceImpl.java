@@ -2,13 +2,13 @@ package com.usc.ranshop.service.impl;
 
 
 import com.usc.ranshop.exception.MyException;
-import com.usc.ranshop.repository.OrderRepository;
-import com.usc.ranshop.repository.ProductInOrderRepository;
-import com.usc.ranshop.repository.ProductInfoRepository;
-import com.usc.ranshop.repository.UserRepository;
-import com.usc.ranshop.entity.OrderMain;
-import com.usc.ranshop.entity.ProductInOrder;
-import com.usc.ranshop.entity.ProductInfo;
+import com.usc.ranshop.dao.OrderDao;
+import com.usc.ranshop.dao.ProductInOrderDao;
+import com.usc.ranshop.dao.ProductInfoDao;
+import com.usc.ranshop.dao.UserDao;
+import com.usc.ranshop.beans.OrderMain;
+import com.usc.ranshop.beans.ProductInOrder;
+import com.usc.ranshop.beans.ProductInfo;
 import com.usc.ranshop.enums.OrderStatusEnum;
 import com.usc.ranshop.enums.ResultEnum;
 import com.usc.ranshop.service.OrderService;
@@ -25,39 +25,39 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class OrderServiceImpl implements OrderService {
     @Autowired
-    OrderRepository orderRepository;
+    OrderDao orderDao;
     @Autowired
-    UserRepository userRepository;
+    UserDao userDao;
     @Autowired
-    ProductInfoRepository productInfoRepository;
+    ProductInfoDao productInfoDao;
     @Autowired
     ProductService productService;
     @Autowired
-    ProductInOrderRepository productInOrderRepository;
+    ProductInOrderDao productInOrderDao;
 
     @Override
     public Page<OrderMain> findAll(Pageable pageable) {
-        return orderRepository.findAllByOrderByOrderStatusAscCreateTimeDesc(pageable);
+        return orderDao.findAllByOrderByOrderStatusAscCreateTimeDesc(pageable);
     }
 
     @Override
     public Page<OrderMain> findByStatus(Integer status, Pageable pageable) {
-        return orderRepository.findAllByOrderStatusOrderByCreateTimeDesc(status, pageable);
+        return orderDao.findAllByOrderStatusOrderByCreateTimeDesc(status, pageable);
     }
 
     @Override
     public Page<OrderMain> findByBuyerEmail(String email, Pageable pageable) {
-        return orderRepository.findAllByBuyerEmailOrderByOrderStatusAscCreateTimeDesc(email, pageable);
+        return orderDao.findAllByBuyerEmailOrderByOrderStatusAscCreateTimeDesc(email, pageable);
     }
 
     @Override
     public Page<OrderMain> findByBuyerPhone(String phone, Pageable pageable) {
-        return orderRepository.findAllByBuyerPhoneOrderByOrderStatusAscCreateTimeDesc(phone, pageable);
+        return orderDao.findAllByBuyerPhoneOrderByOrderStatusAscCreateTimeDesc(phone, pageable);
     }
 
     @Override
     public OrderMain findOne(Long orderId) {
-        OrderMain orderMain = orderRepository.findByOrderId(orderId);
+        OrderMain orderMain = orderDao.findByOrderId(orderId);
         if(orderMain == null) {
             throw new MyException(ResultEnum.ORDER_NOT_FOUND);
         }
@@ -73,8 +73,8 @@ public class OrderServiceImpl implements OrderService {
         }
 
         orderMain.setOrderStatus(OrderStatusEnum.FINISHED.getCode());
-        orderRepository.save(orderMain);
-        return orderRepository.findByOrderId(orderId);
+        orderDao.save(orderMain);
+        return orderDao.findByOrderId(orderId);
     }
 
     @Override
@@ -86,17 +86,17 @@ public class OrderServiceImpl implements OrderService {
         }
 
         orderMain.setOrderStatus(OrderStatusEnum.CANCELED.getCode());
-        orderRepository.save(orderMain);
+        orderDao.save(orderMain);
 
         // Restore Stock
         Iterable<ProductInOrder> products = orderMain.getProducts();
         for(ProductInOrder productInOrder : products) {
-            ProductInfo productInfo = productInfoRepository.findByProductId(productInOrder.getProductId());
+            ProductInfo productInfo = productInfoDao.findByProductId(productInOrder.getProductId());
             if(productInfo != null) {
                 productService.increaseStock(productInOrder.getProductId(), productInOrder.getCount());
             }
         }
-        return orderRepository.findByOrderId(orderId);
+        return orderDao.findByOrderId(orderId);
 
     }
 }

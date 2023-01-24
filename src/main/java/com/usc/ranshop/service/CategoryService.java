@@ -1,6 +1,6 @@
 package com.usc.ranshop.service;
 
-import com.usc.ranshop.entity.ProductCategory;
+import com.usc.ranshop.beans.ProductCategory;
 
 import java.util.List;
 

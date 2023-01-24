@@ -1,9 +1,9 @@
 package com.usc.ranshop.service.impl;
 
-import com.usc.ranshop.entity.Cart;
-import com.usc.ranshop.entity.ProductInOrder;
-import com.usc.ranshop.entity.User;
-import com.usc.ranshop.repository.ProductInOrderRepository;
+import com.usc.ranshop.beans.Cart;
+import com.usc.ranshop.beans.ProductInOrder;
+import com.usc.ranshop.beans.User;
+import com.usc.ranshop.dao.ProductInOrderDao;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,7 +22,7 @@ import static org.junit.Assert.assertThat;
 public class ProductInOrderServiceImplTest {
 
     @Mock
-    private ProductInOrderRepository productInOrderRepository;
+    private ProductInOrderDao productInOrderDao;
 
     @InjectMocks
     private ProductInOrderServiceImpl productInOrderService;
@@ -51,7 +51,7 @@ public class ProductInOrderServiceImplTest {
     public void updateTest() {
         productInOrderService.update("1", 10, user);
 
-        Mockito.verify(productInOrderRepository, Mockito.times(1)).save(productInOrder);
+        Mockito.verify(productInOrderDao, Mockito.times(1)).save(productInOrder);
     }
 
     @Test

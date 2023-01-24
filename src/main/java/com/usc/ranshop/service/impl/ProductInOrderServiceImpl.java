@@ -1,8 +1,8 @@
 package com.usc.ranshop.service.impl;
 
-import com.usc.ranshop.repository.ProductInOrderRepository;
-import com.usc.ranshop.entity.ProductInOrder;
-import com.usc.ranshop.entity.User;
+import com.usc.ranshop.dao.ProductInOrderDao;
+import com.usc.ranshop.beans.ProductInOrder;
+import com.usc.ranshop.beans.User;
 import com.usc.ranshop.service.ProductInOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class ProductInOrderServiceImpl implements ProductInOrderService {
 
     @Autowired
-    ProductInOrderRepository productInOrderRepository;
+    ProductInOrderDao productInOrderDao;
 
     @Override
     @Transactional
@@ -25,7 +25,7 @@ public class ProductInOrderServiceImpl implements ProductInOrderService {
         var op = user.getCart().getProducts().stream().filter(e -> itemId.equals(e.getProductId())).findFirst();
         op.ifPresent(productInOrder -> {
             productInOrder.setCount(quantity);
-            productInOrderRepository.save(productInOrder);
+            productInOrderDao.save(productInOrder);
         });
 
     }

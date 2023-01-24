@@ -1,12 +1,12 @@
 package com.usc.ranshop.service.impl;
 
-import com.usc.ranshop.entity.OrderMain;
-import com.usc.ranshop.entity.ProductInOrder;
-import com.usc.ranshop.entity.ProductInfo;
+import com.usc.ranshop.beans.OrderMain;
+import com.usc.ranshop.beans.ProductInOrder;
+import com.usc.ranshop.beans.ProductInfo;
 import com.usc.ranshop.enums.OrderStatusEnum;
 import com.usc.ranshop.exception.MyException;
-import com.usc.ranshop.repository.OrderRepository;
-import com.usc.ranshop.repository.ProductInfoRepository;
+import com.usc.ranshop.dao.OrderDao;
+import com.usc.ranshop.dao.ProductInfoDao;
 import com.usc.ranshop.service.ProductService;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,10 +26,10 @@ import static org.mockito.Mockito.when;
 public class OrderServiceImplTest {
 
     @Mock
-    private OrderRepository orderRepository;
+    private OrderDao orderDao;
 
     @Mock
-    private ProductInfoRepository productInfoRepository;
+    private ProductInfoDao productInfoDao;
 
     @Mock
     private ProductService productService;
@@ -62,7 +62,7 @@ public class OrderServiceImplTest {
 
     @Test
     public void finishSuccessTest() {
-        when(orderRepository.findByOrderId(orderMain.getOrderId())).thenReturn(orderMain);
+        when(orderDao.findByOrderId(orderMain.getOrderId())).thenReturn(orderMain);
 
         OrderMain orderMainReturn = orderService.finish(orderMain.getOrderId());
 
@@ -74,7 +74,7 @@ public class OrderServiceImplTest {
     public void finishStatusCanceledTest() {
         orderMain.setOrderStatus(OrderStatusEnum.CANCELED.getCode());
 
-        when(orderRepository.findByOrderId(orderMain.getOrderId())).thenReturn(orderMain);
+        when(orderDao.findByOrderId(orderMain.getOrderId())).thenReturn(orderMain);
 
         OrderMain orderMainReturn = orderService.finish(orderMain.getOrderId());
 
@@ -86,7 +86,7 @@ public class OrderServiceImplTest {
     public void finishStatusFinishedTest() {
         orderMain.setOrderStatus(OrderStatusEnum.FINISHED.getCode());
 
-        when(orderRepository.findByOrderId(orderMain.getOrderId())).thenReturn(orderMain);
+        when(orderDao.findByOrderId(orderMain.getOrderId())).thenReturn(orderMain);
 
         OrderMain orderMainReturn = orderService.finish(orderMain.getOrderId());
 
@@ -96,8 +96,8 @@ public class OrderServiceImplTest {
 
     @Test
     public void cancelSuccessTest() {
-        when(orderRepository.findByOrderId(orderMain.getOrderId())).thenReturn(orderMain);
-        when(productInfoRepository.findByProductId(orderMain.getProducts().iterator().next().getProductId())).thenReturn(productInfo);
+        when(orderDao.findByOrderId(orderMain.getOrderId())).thenReturn(orderMain);
+        when(productInfoDao.findByProductId(orderMain.getProducts().iterator().next().getProductId())).thenReturn(productInfo);
 
         OrderMain orderMainReturn = orderService.cancel(orderMain.getOrderId());
 
@@ -108,7 +108,7 @@ public class OrderServiceImplTest {
 
     @Test
     public void cancelNoProduct() {
-        when(orderRepository.findByOrderId(orderMain.getOrderId())).thenReturn(orderMain);
+        when(orderDao.findByOrderId(orderMain.getOrderId())).thenReturn(orderMain);
         orderMain.setProducts(new HashSet<>());
 
         OrderMain orderMainReturn = orderService.cancel(orderMain.getOrderId());
@@ -121,7 +121,7 @@ public class OrderServiceImplTest {
     public void cancelStatusCanceledTest() {
         orderMain.setOrderStatus(OrderStatusEnum.CANCELED.getCode());
 
-        when(orderRepository.findByOrderId(orderMain.getOrderId())).thenReturn(orderMain);
+        when(orderDao.findByOrderId(orderMain.getOrderId())).thenReturn(orderMain);
 
         orderService.cancel(orderMain.getOrderId());
     }
@@ -130,7 +130,7 @@ public class OrderServiceImplTest {
     public void cancelStatusFinishTest() {
         orderMain.setOrderStatus(OrderStatusEnum.FINISHED.getCode());
 
-        when(orderRepository.findByOrderId(orderMain.getOrderId())).thenReturn(orderMain);
+        when(orderDao.findByOrderId(orderMain.getOrderId())).thenReturn(orderMain);
 
         orderService.cancel(orderMain.getOrderId());
     }

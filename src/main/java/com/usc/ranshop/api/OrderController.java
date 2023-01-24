@@ -1,8 +1,8 @@
 package com.usc.ranshop.api;
 
 
-import com.usc.ranshop.entity.OrderMain;
-import com.usc.ranshop.entity.ProductInOrder;
+import com.usc.ranshop.beans.OrderMain;
+import com.usc.ranshop.beans.ProductInOrder;
 import com.usc.ranshop.service.OrderService;
 import com.usc.ranshop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package com.usc.ranshop.security.JWT;
 
-import com.usc.ranshop.entity.User;
+import com.usc.ranshop.beans.User;
 import com.usc.ranshop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

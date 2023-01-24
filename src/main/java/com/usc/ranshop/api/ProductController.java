@@ -1,6 +1,6 @@
 package com.usc.ranshop.api;
 
-import com.usc.ranshop.entity.ProductInfo;
+import com.usc.ranshop.beans.ProductInfo;
 import com.usc.ranshop.service.CategoryService;
 import com.usc.ranshop.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;

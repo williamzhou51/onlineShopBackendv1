@@ -2,14 +2,14 @@ package com.usc.ranshop.service.impl;
 
 
 import com.usc.ranshop.exception.MyException;
-import com.usc.ranshop.repository.CartRepository;
-import com.usc.ranshop.repository.OrderRepository;
-import com.usc.ranshop.repository.ProductInOrderRepository;
-import com.usc.ranshop.repository.UserRepository;
-import com.usc.ranshop.entity.Cart;
-import com.usc.ranshop.entity.OrderMain;
-import com.usc.ranshop.entity.ProductInOrder;
-import com.usc.ranshop.entity.User;
+import com.usc.ranshop.dao.CartDao;
+import com.usc.ranshop.dao.OrderDao;
+import com.usc.ranshop.dao.ProductInOrderDao;
+import com.usc.ranshop.dao.UserDao;
+import com.usc.ranshop.beans.Cart;
+import com.usc.ranshop.beans.OrderMain;
+import com.usc.ranshop.beans.ProductInOrder;
+import com.usc.ranshop.beans.User;
 import com.usc.ranshop.enums.ResultEnum;
 import com.usc.ranshop.service.CartService;
 import com.usc.ranshop.service.ProductService;
@@ -30,14 +30,14 @@ public class CartServiceImpl implements CartService {
     @Autowired
     ProductService productService;
     @Autowired
-    OrderRepository orderRepository;
+    OrderDao orderDao;
     @Autowired
-    UserRepository userRepository;
+    UserDao userDao;
 
     @Autowired
-    ProductInOrderRepository productInOrderRepository;
+    ProductInOrderDao productInOrderDao;
     @Autowired
-    CartRepository cartRepository;
+    CartDao cartDAO;
     @Autowired
     UserService userService;
 
@@ -62,9 +62,9 @@ public class CartServiceImpl implements CartService {
                 prod.setCart(finalCart);
                 finalCart.getProducts().add(prod);
             }
-            productInOrderRepository.save(prod);
+            productInOrderDao.save(prod);
         });
-        cartRepository.save(finalCart);
+        cartDAO.save(finalCart);
 
     }
 
@@ -78,7 +78,7 @@ public class CartServiceImpl implements CartService {
         var op = user.getCart().getProducts().stream().filter(e -> itemId.equals(e.getProductId())).findFirst();
         op.ifPresent(productInOrder -> {
             productInOrder.setCart(null);
-            productInOrderRepository.deleteById(productInOrder.getId());
+            productInOrderDao.deleteById(productInOrder.getId());
         });
     }
 
@@ -87,14 +87,14 @@ public class CartServiceImpl implements CartService {
     public void checkout(User user) {
         // Creat an order
         OrderMain order = new OrderMain(user);
-        orderRepository.save(order);
+        orderDao.save(order);
 
         // clear cart's foreign key & set order's foreign key& decrease stock
         user.getCart().getProducts().forEach(productInOrder -> {
             productInOrder.setCart(null);
             productInOrder.setOrderMain(order);
             productService.decreaseStock(productInOrder.getProductId(), productInOrder.getCount());
-            productInOrderRepository.save(productInOrder);
+            productInOrderDao.save(productInOrder);
         });
 
     }

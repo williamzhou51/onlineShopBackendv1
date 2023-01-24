@@ -1,10 +1,10 @@
 package com.usc.ranshop.api;
 
 
-import com.usc.ranshop.entity.Cart;
-import com.usc.ranshop.entity.ProductInOrder;
-import com.usc.ranshop.entity.User;
-import com.usc.ranshop.repository.ProductInOrderRepository;
+import com.usc.ranshop.beans.Cart;
+import com.usc.ranshop.beans.ProductInOrder;
+import com.usc.ranshop.beans.User;
+import com.usc.ranshop.dao.ProductInOrderDao;
 import com.usc.ranshop.service.CartService;
 import com.usc.ranshop.service.ProductInOrderService;
 import com.usc.ranshop.service.ProductService;
@@ -34,7 +34,7 @@ public class CartController {
     @Autowired
     ProductInOrderService productInOrderService;
     @Autowired
-    ProductInOrderRepository productInOrderRepository;
+    ProductInOrderDao productInOrderDao;
 
     @PostMapping("")
     public ResponseEntity<Cart> mergeCart(@RequestBody Collection<ProductInOrder> productInOrders, Principal principal) {

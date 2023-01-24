@@ -1,4 +1,4 @@
-package com.usc.ranshop.entity;
+package com.usc.ranshop.beans;
 
 import lombok.Data;
 import org.hibernate.annotations.DynamicUpdate;

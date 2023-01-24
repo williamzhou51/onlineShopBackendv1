@@ -1,6 +1,6 @@
 package com.usc.ranshop.vo.response;
 
-import com.usc.ranshop.entity.ProductInfo;
+import com.usc.ranshop.beans.ProductInfo;
 import org.springframework.data.domain.Page;
 
 /**

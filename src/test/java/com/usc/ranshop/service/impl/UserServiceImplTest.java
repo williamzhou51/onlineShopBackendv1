@@ -1,9 +1,9 @@
 package com.usc.ranshop.service.impl;
 
-import com.usc.ranshop.entity.User;
+import com.usc.ranshop.beans.User;
 import com.usc.ranshop.exception.MyException;
-import com.usc.ranshop.repository.CartRepository;
-import com.usc.ranshop.repository.UserRepository;
+import com.usc.ranshop.dao.CartDao;
+import com.usc.ranshop.dao.UserDao;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,13 +24,13 @@ public class UserServiceImplTest {
     private UserServiceImpl userService;
 
     @Mock
-    private UserRepository userRepository;
+    private UserDao userDao;
 
     @Mock
     private PasswordEncoder passwordEncoder;
 
     @Mock
-    private CartRepository cartRepository;
+    private CartDao cartDAO;
 
     private User user;
 
@@ -46,11 +46,11 @@ public class UserServiceImplTest {
 
     @Test
     public void createUserTest() {
-        when(userRepository.save(user)).thenReturn(user);
+        when(userDao.save(user)).thenReturn(user);
 
         userService.save(user);
 
-        Mockito.verify(userRepository, Mockito.times(2)).save(user);
+        Mockito.verify(userDao, Mockito.times(2)).save(user);
     }
 
     @Test(expected = MyException.class)
@@ -63,8 +63,8 @@ public class UserServiceImplTest {
         User oldUser = new User();
         oldUser.setEmail("email@test.com");
 
-        when(userRepository.findByEmail(user.getEmail())).thenReturn(oldUser);
-        when(userRepository.save(oldUser)).thenReturn(oldUser);
+        when(userDao.findByEmail(user.getEmail())).thenReturn(oldUser);
+        when(userDao.save(oldUser)).thenReturn(oldUser);
 
         User userResult = userService.update(user);
 

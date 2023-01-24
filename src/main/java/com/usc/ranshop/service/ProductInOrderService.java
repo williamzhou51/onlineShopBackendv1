@@ -1,7 +1,7 @@
 package com.usc.ranshop.service;
 
-import com.usc.ranshop.entity.ProductInOrder;
-import com.usc.ranshop.entity.User;
+import com.usc.ranshop.beans.ProductInOrder;
+import com.usc.ranshop.beans.User;
 
 /**
  * Created By Zhu Lin on 1/3/2019.

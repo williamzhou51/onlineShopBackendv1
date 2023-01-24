@@ -2,10 +2,10 @@ package com.usc.ranshop.service.impl;
 
 
 import com.usc.ranshop.exception.MyException;
-import com.usc.ranshop.repository.CartRepository;
-import com.usc.ranshop.repository.UserRepository;
-import com.usc.ranshop.entity.Cart;
-import com.usc.ranshop.entity.User;
+import com.usc.ranshop.dao.CartDao;
+import com.usc.ranshop.dao.UserDao;
+import com.usc.ranshop.beans.Cart;
+import com.usc.ranshop.beans.User;
 import com.usc.ranshop.enums.ResultEnum;
 import com.usc.ranshop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,18 +25,18 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
-    UserRepository userRepository;
+    UserDao userDao;
     @Autowired
-    CartRepository cartRepository;
+    CartDao cartDAO;
 
     @Override
     public User findOne(String email) {
-        return userRepository.findByEmail(email);
+        return userDao.findByEmail(email);
     }
 
     @Override
     public Collection<User> findByRole(String role) {
-        return userRepository.findAllByRole(role);
+        return userDao.findAllByRole(role);
     }
 
     @Override
@@ -45,12 +45,12 @@ public class UserServiceImpl implements UserService {
         //register
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         try {
-            User savedUser = userRepository.save(user);
+            User savedUser = userDao.save(user);
 
             // initial Cart
-            Cart savedCart = cartRepository.save(new Cart(savedUser));
+            Cart savedCart = cartDAO.save(new Cart(savedUser));
             savedUser.setCart(savedCart);
-            return userRepository.save(savedUser);
+            return userDao.save(savedUser);
 
         } catch (Exception e) {
             throw new MyException(ResultEnum.VALID_ERROR);
@@ -61,12 +61,12 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User update(User user) {
-        User oldUser = userRepository.findByEmail(user.getEmail());
+        User oldUser = userDao.findByEmail(user.getEmail());
         oldUser.setPassword(passwordEncoder.encode(user.getPassword()));
         oldUser.setName(user.getName());
         oldUser.setPhone(user.getPhone());
         oldUser.setAddress(user.getAddress());
-        return userRepository.save(oldUser);
+        return userDao.save(oldUser);
     }
 
 }

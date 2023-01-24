@@ -1,7 +1,7 @@
 package com.usc.ranshop.service;
 
 
-import com.usc.ranshop.entity.OrderMain;
+import com.usc.ranshop.beans.OrderMain;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
